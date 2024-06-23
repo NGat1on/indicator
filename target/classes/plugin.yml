@@ -1,0 +1,5 @@
+name: Example
+version: '1.0.1'
+main: cn.ng.Example
+author: "念国"
+softdepend: [PlaceholderAPI]
