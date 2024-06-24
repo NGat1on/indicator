@@ -3,3 +3,11 @@ version: '${project.version}'
 main: cn.ng.Example
 author: "念国"
 softdepend: [PlaceholderAPI]
+
+commands:
+  ind:
+    permission: ind.admin
+
+permissions:
+  ind.admin:
+    default: op

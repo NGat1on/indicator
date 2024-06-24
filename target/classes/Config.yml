@@ -1,0 +1,14 @@
+Config:
+  #是否开启指示器
+  indicator-enabled: true
+  #是否追踪附近的玩家
+  NearestPlayer-tracking: true
+  #是否在没有目标玩家与附近的玩家的情况下显示自己的指示器
+  Player-Indicator: true
+Message:
+  #指示器信息
+  indicator:
+    #追踪时显示的信息
+    target-tracking: "&f最近的玩家: &e{target} &8| &f方向: &b{ChineseDirection} {Angle}° &8| &f箭头: &b&l{Direction} &8| &f距离: &a{Distance} 格"
+    #玩家指示器信息
+    Player-Indicator: "&f当前: &b{Direction} {Angle}°"
