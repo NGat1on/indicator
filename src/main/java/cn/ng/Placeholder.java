@@ -42,6 +42,24 @@ public class Placeholder extends PlaceholderExpansion {
         if(params.equalsIgnoreCase("PlayerDirection")) {
             return plugin.getPlayerDirection(p);
         }
+        if(params.equalsIgnoreCase("Chunk")) {
+            return Example.getPlayerChunk(p);
+        }
+        if (params.startsWith("Chunk_")){
+            Player target= Bukkit.getPlayer(params.replace("Chunk_",""));
+            if (target!=null){
+                return Example.getPlayerChunk(target);
+            }
+        }
+        if(params.equalsIgnoreCase("Biome")) {
+            return Example.getPlayerBiome(p);
+        }
+        if (params.startsWith("Biome_")){
+            Player target= Bukkit.getPlayer(params.replace("Biome_",""));
+            if (target!=null){
+                return Example.getPlayerBiome(target);
+            }
+        }
         if(params.equalsIgnoreCase("Angle")) {
             if (Example.targets.get(p)!=null){
                 return String.valueOf(plugin.getAngle(p, Example.targets.get(p)));

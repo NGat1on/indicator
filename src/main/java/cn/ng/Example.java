@@ -4,7 +4,9 @@ import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -41,6 +43,8 @@ public final class Example extends JavaPlugin implements Listener {
         // Plugin startup logic
         getLogger().info("ExamplePlugin 已启用");
         getCommand("ind").setExecutor(new Command(this));
+        getCommand("track").setExecutor(new Command(this));
+        getCommand("qx").setExecutor(new Command(this));
         File ConfigFile = new File(getDataFolder(), "Config.yml");
         if (!ConfigFile.exists()) {
             saveResource("Config.yml", false);
@@ -58,21 +62,20 @@ public final class Example extends JavaPlugin implements Listener {
                         Player nearestPlayer = getNearestPlayer(player);
                         String message = null;
                         if (targets.get(player) != null) {
-                            message = msg(config.getString("Message.indicator.target-tracking").replace("{target}", targets.get(player).getName()).replace("{ChineseDirection}", getChineseDirection(targets.get(player), player)).replace("{Direction}", getDirection(targets.get(player),player)).replace("{Angle}", String.valueOf(getAngle(player, targets.get(player)))).replace("{Distance}", String.valueOf((int)player.getLocation().distance(targets.get(player).getLocation()))));
+                            message = msg(config.getString("Message.indicator.target-tracking").replace("{target}", targets.get(player).getName()).replace("{ChineseDirection}", getChineseDirection(targets.get(player), player)).replace("{Direction}", getDirection(targets.get(player),player)).replace("{Angle}", String.valueOf(getAngle(player, targets.get(player)))).replace("{Distance}", String.valueOf((int)player.getLocation().distance(targets.get(player).getLocation()))).replace("{Chunk}",getPlayerChunk(targets.get(player))).replace("{Biome}",getPlayerBiome(targets.get(player))));
                         } else {
                             if (config.getBoolean("Config.NearestPlayer-tracking")) {
                                 if (nearestPlayer != null) {
-                                    message = msg(config.getString("Message.indicator.target-tracking").replace("{target}", nearestPlayer.getName()).replace("{ChineseDirection}", getChineseDirection(nearestPlayer, player)).replace("{Direction}", getDirection(player, nearestPlayer)).replace("{Angle}", String.valueOf(getAngle(nearestPlayer,player))).replace("{Distance}", String.valueOf((int)player.getLocation().distance(nearestPlayer.getLocation()))));
-                                }
-                            } else {
-                                if (config.getBoolean("Config.Player-Indicator")) {
-                                    message = msg(config.getString("Message.indicator.Player-Indicator").replace("{Direction}", getPlayerDirection(player)).replace("{Angle}", String.valueOf(getPlayerAngle(player))));
+                                    message = msg(config.getString("Message.indicator.target-tracking").replace("{target}", nearestPlayer.getName()).replace("{ChineseDirection}", getChineseDirection(nearestPlayer, player)).replace("{Direction}", getDirection(player, nearestPlayer)).replace("{Angle}", String.valueOf(getAngle(nearestPlayer,player))).replace("{Distance}", String.valueOf((int)player.getLocation().distance(nearestPlayer.getLocation()))).replace("{Chunk}",getPlayerChunk(nearestPlayer)).replace("{Biome}",getPlayerBiome(nearestPlayer)));
                                 }
                             }
                         }
-                        if (message != null) {
-                            sendActionBar(player, message);
+                        if (message == null) {
+                            if (config.getBoolean("Config.Player-Indicator")) {
+                                message = msg(config.getString("Message.indicator.Player-Indicator").replace("{Direction}", getPlayerDirection(player)).replace("{Angle}", String.valueOf(getPlayerAngle(player))).replace("{Chunk}",getPlayerChunk(player)).replace("{Biome}",getPlayerBiome(player)));
+                            }
                         }
+                        sendActionBar(player, message);
                     }
                 }
             }.runTaskTimer(this, 0, 10);
@@ -84,7 +87,14 @@ public final class Example extends JavaPlugin implements Listener {
         // Plugin shutdown logic
         getLogger().info("ExamplePlugin 已卸载");
     }
-
+    public static String getPlayerBiome(Player player) {
+        Biome biome = player.getLocation().getBlock().getBiome();
+        return BiomeTranslator.getTranslatedName(biome.name());
+    }
+    public static String getPlayerChunk(Player player) {
+        Chunk chunk = player.getLocation().getChunk();
+        return chunk.getX() + "," + chunk.getZ();
+    }
     public static String getDirection(Player player1, Player player2) {
         Vector loc1 = player1.getLocation().toVector();
         Vector loc2 = player2.getLocation().toVector();

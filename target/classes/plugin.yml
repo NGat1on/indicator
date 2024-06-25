@@ -1,5 +1,5 @@
 name: Example
-version: '1.0.2'
+version: '1.0.3'
 main: cn.ng.Example
 author: "念国"
 softdepend: [PlaceholderAPI]
@@ -7,7 +7,16 @@ softdepend: [PlaceholderAPI]
 commands:
   ind:
     permission: ind.admin
-
+  track:
+    permission: ind.track
+  qx:
+    permission: ind.track
 permissions:
   ind.admin:
     default: op
+  ind.track:
+    default: true
+  track.accept:
+    default: true
+  track.deny:
+    default: true

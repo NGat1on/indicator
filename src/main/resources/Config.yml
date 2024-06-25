@@ -1,4 +1,6 @@
 Config:
+  #单位ticks (20ticks = 1s)
+  Request-Time: 200
   #是否开启指示器
   indicator-enabled: true
   #是否追踪附近的玩家
@@ -9,6 +11,6 @@ Message:
   #指示器信息
   indicator:
     #追踪时显示的信息
-    target-tracking: "&f最近的玩家: &e{target} &8| &f方向: &b{ChineseDirection} {Angle}° &8| &f箭头: &b&l{Direction} &8| &f距离: &a{Distance} 格"
+    target-tracking: "&f目标玩家: &e{target} &8| &f方向: &b{ChineseDirection} {Angle}° &8| &f箭头: &b&l{Direction} &8| &f距离: &a{Distance} 格"
     #玩家指示器信息
-    Player-Indicator: "&f当前: &b{Direction} {Angle}°"
+    Player-Indicator: "&f当前: &b{Direction} {Angle}° &8| &f区块: &a{Chunk} &8| &f生物群系: &e{Biome}"
